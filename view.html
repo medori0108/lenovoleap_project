@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Events</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #3a5a40, #a68a64, #6f4e37);
+            color: #333;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: 30px auto;
+        }
+
+        .box {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            text-align: center;
+            color: #3a5a40;
+        }
+
+        .event {
+            border-left: 5px solid #6f4e37;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+
+        .event h4 {
+            margin: 0;
+        }
+
+        .event p {
+            margin: 5px 0;
+        }
+
+        button {
+            padding: 8px 12px;
+            margin-top: 5px;
+            background: #6f4e37;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #5a3d2b;
+        }
+
+        .back-btn {
+            background: #3a5a40;
+            margin-bottom: 15px;
+        }
+
+        .back-btn:hover {
+            background: #2d4631;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- BACK BUTTON -->
+    <button class="back-btn" onclick="goBack()">⬅ Back to Home</button>
+
+    <!-- EVENTS LIST -->
+    <div class="box">
+        <h2>Available Events</h2>
+        <div id="eventList"></div>
+    </div>
+
+</div>
+
+<script>
+
+// Load events on page load
+window.onload = showEvents;
+
+function showEvents() {
+    let events = JSON.parse(localStorage.getItem("events")) || [];
+    let output = "";
+
+    if(events.length === 0){
+        output = "No events available";
+    } else {
+        events.forEach((e, index) => {
+            output += `
+                <div class="event">
+                    <h4>${e.name} (${e.type})</h4>
+                    <p><b>Organization:</b> ${e.org}</p>
+                    <p><b>Date:</b> ${e.date}</p>
+                    <p><b>City:</b> ${e.city}</p>
+                    <p>${e.desc}</p>
+                    <button onclick="registerEvent(${index})">Register</button>
+                </div>
+            `;
+        });
+    }
+
+    document.getElementById("eventList").innerHTML = output;
+}
+
+// Register (demo)
+function registerEvent(index) {
+    let events = JSON.parse(localStorage.getItem("events"));
+    alert("Registered for " + events[index].name);
+}
+
+// Back to home
+function goBack() {
+    window.location.href = "home.html";
+}
+
+</script>
+
+</body>
+</html>
