@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Post Event</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #3a5a40, #a68a64, #6f4e37);
+            color: #333;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: 30px auto;
+        }
+
+        .box {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #3a5a40;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin: 6px 0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        textarea {
+            resize: none;
+            height: 70px;
+        }
+
+        button {
+            padding: 10px;
+            margin-top: 10px;
+            background: #6f4e37;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #5a3d2b;
+        }
+
+        .event {
+            border-left: 5px solid #6f4e37;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+
+        .delete-btn {
+            background: red;
+        }
+
+        /* Back button style */
+        .back-btn {
+            background: #3a5a40;
+            margin-bottom: 10px;
+        }
+
+        .back-btn:hover {
+            background: #2d4631;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- BACK BUTTON -->
+    <button class="back-btn" onclick="goBack()">⬅ Back to Home</button>
+
+    <!-- POST FORM -->
+    <div class="box">
+        <h2>Post New Event</h2>
+
+        <input type="text" id="org" placeholder="Organization Name">
+        <input type="text" id="name" placeholder="Event Name">
+
+        <select id="type">
+            <option>Hackathon</option>
+            <option>Seminar</option>
+            <option>Workshop</option>
+            <option>Job Fair</option>
+        </select>
+
+        <input type="date" id="date">
+        <input type="text" id="city" placeholder="City">
+
+        <textarea id="desc" placeholder="Description"></textarea>
+
+        <button onclick="addEvent()">Post Event</button>
+    </div>
+
+    <!-- EVENT LIST -->
+    <div class="box">
+        <h2>Posted Events</h2>
+        <div id="eventList"></div>
+    </div>
+
+</div>
+
+<script>
+
+// Load events
+window.onload = showEvents;
+
+// Add event
+function addEvent() {
+    const org = document.getElementById("org").value;
+    const name = document.getElementById("name").value;
+    const type = document.getElementById("type").value;
+    const date = document.getElementById("date").value;
+    const city = document.getElementById("city").value;
+    const desc = document.getElementById("desc").value;
+
+    if (!org || !name || !date || !city || !desc) {
+        alert("Fill all fields");
+        return;
+    }
+
+    let events = JSON.parse(localStorage.getItem("events")) || [];
+
+    events.push({ org, name, type, date, city, desc });
+
+    localStorage.setItem("events", JSON.stringify(events));
+
+    clearForm();
+    showEvents();
+}
+
+// Show events
+function showEvents() {
+    let events = JSON.parse(localStorage.getItem("events")) || [];
+    let output = "";
+
+    events.forEach((e, index) => {
+        output += `
+            <div class="event">
+                <h4>${e.name} (${e.type})</h4>
+                <p><b>Org:</b> ${e.org}</p>
+                <p><b>Date:</b> ${e.date}</p>
+                <p><b>City:</b> ${e.city}</p>
+                <p>${e.desc}</p>
+                <button class="delete-btn" onclick="deleteEvent(${index})">Delete</button>
+            </div>
+        `;
+    });
+
+    document.getElementById("eventList").innerHTML = output || "No events yet";
+}
+
+// Delete event
+function deleteEvent(index) {
+    let events = JSON.parse(localStorage.getItem("events"));
+    events.splice(index, 1);
+    localStorage.setItem("events", JSON.stringify(events));
+    showEvents();
+}
+
+// Clear form
+function clearForm() {
+    document.getElementById("org").value = "";
+    document.getElementById("name").value = "";
+    document.getElementById("date").value = "";
+    document.getElementById("city").value = "";
+    document.getElementById("desc").value = "";
+}
+
+// Back to welcome/home page
+function goBack() {
+    window.location.href = "home.html";
+}
+
+</script>
+
+</body>
+</html>
