@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Logout</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #3a5a40, #a68a64, #6f4e37);
+            color: white;
+            text-align: center;
+        }
+
+        .box {
+            background: rgba(0,0,0,0.5);
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 5px;
+            background: #ffd166;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #ffb703;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h2>Are you sure you want to logout?</h2>
+
+    <button onclick="logout()">Yes, Logout</button>
+    <br><br>
+    <button onclick="goBack()">Cancel</button>
+</div>
+
+<script>
+function logout() {
+    localStorage.clear(); // clear user data
+    window.location.href = "index.html"; // go to login page
+}
+
+function goBack() {
+    window.history.back(); // go back to previous page
+}
+</script>
+
+</body>
+</html>
